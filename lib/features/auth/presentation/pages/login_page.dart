@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:blog_app/features/auth/presentation/pages/signup_page.dart';
 import 'package:blog_app/features/auth/presentation/widgets/auth_button.dart';
@@ -54,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 30),
               AuthButton(
                 buttonText: 'Sign In',
+                onPressed: () {},
               ),
               SizedBox(height: 30),
               GestureDetector(
