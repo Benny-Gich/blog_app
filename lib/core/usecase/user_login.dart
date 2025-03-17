@@ -1,30 +1,31 @@
+// ignore_for_file: implementation_imports
+
 import 'package:blog_app/core/error/failure.dart';
 import 'package:blog_app/core/usecase/usecase.dart';
 import 'package:blog_app/features/auth/domain/entities/profile.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
+import 'package:fpdart/src/either.dart';
 import 'package:fpdart/fpdart.dart';
 
-class UserSignUp implements UseCase<Profile, UserSignUpParms> {
+class UserLogin implements UseCase<Profile, UserLoginParams> {
   final AuthRepository authRepository;
-  const UserSignUp(this.authRepository);
+  const UserLogin(this.authRepository);
 
   @override
-  Future<Either<Failure, Profile>> call(UserSignUpParms params) async {
-    return await authRepository.signUpWithEmailPassword(
-      name: params.name,
+  Future<Either<Failure, Profile>> call(UserLoginParams params) async {
+    return await authRepository.loginWithEmailPassword(
       email: params.email,
       password: params.password,
     );
   }
 }
 
-class UserSignUpParms {
+class UserLoginParams {
   final String email;
   final String password;
-  final String name;
-  UserSignUpParms({
+
+  UserLoginParams({
     required this.email,
     required this.password,
-    required this.name,
   });
 }
