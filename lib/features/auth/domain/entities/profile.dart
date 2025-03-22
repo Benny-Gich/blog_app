@@ -3,5 +3,9 @@ class Profile {
   final String name;
   final String email;
 
-  Profile({required this.id, required this.name, required this.email});
+  Profile({
+    required this.id,
+    required this.name,
+    required this.email,
+  });
 }

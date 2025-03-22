@@ -52,68 +52,73 @@ class _SignupPageState extends State<SignupPage> {
             }
             return Form(
               key: formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Sign Up.',
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  AuthField(hinttext: 'Name', controller: nameController),
-                  SizedBox(height: 20),
-                  AuthField(hinttext: 'Email', controller: emailController),
-                  SizedBox(height: 20),
-                  AuthField(
-                      hinttext: 'Password',
-                      controller: passwordController,
-                      isObscureText: true),
-                  SizedBox(height: 30),
-                  AuthButton(
-                    buttonText: 'Sign Up',
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        context.read<AuthBloc>().add(
-                              AuthSignUp(
-                                email: emailController.text.trim(),
-                                name: nameController.text.trim(),
-                                password: passwordController.text.trim(),
-                              ),
-                            );
-                      }
-                    },
-                  ),
-                  SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        LoginPage.route(),
-                      );
-                    },
-                    child: RichText(
-                      text: TextSpan(
-                        text: "Already have an account?",
-                        style: Theme.of(context).textTheme.titleMedium,
-                        children: [
-                          TextSpan(
-                            text: " Sign In",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  color: AppPallete.gradient2,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                        ],
+              child: Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Text(
+                      'Sign Up.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 10),
+                    AuthField(hinttext: 'Name', controller: nameController),
+                    SizedBox(height: 20),
+                    AuthField(hinttext: 'Email', controller: emailController),
+                    SizedBox(height: 20),
+                    AuthField(
+                      hinttext: 'Password',
+                      controller: passwordController,
+                      isObscureText: true,
+                    ),
+                    SizedBox(height: 30),
+                    AuthButton(
+                      buttonText: 'Sign Up',
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(
+                                AuthSignUp(
+                                  email: emailController.text.trim(),
+                                  name: nameController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                ),
+                              );
+                        }
+                      },
+                    ),
+                    SizedBox(height: 30),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          LoginPage.route(),
+                        );
+                      },
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: "Already have an account?",
+                          style: Theme.of(context).textTheme.titleMedium,
+                          children: [
+                            TextSpan(
+                              text: " Sign In",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    color: AppPallete.gradient2,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

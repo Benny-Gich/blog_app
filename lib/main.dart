@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blog_app/core/theme/theme.dart';
 import 'package:blog_app/dependecies/init_dependencies.dart';
 import 'package:blog_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = const AppBlocObserver();
   await initDependencies();
   runApp(
     MultiBlocProvider(
@@ -32,5 +35,21 @@ class MyApp extends StatelessWidget {
       home: const LoginPage(),
       debugShowCheckedModeBanner: false,
     );
+  }
+}
+
+class AppBlocObserver extends BlocObserver {
+  const AppBlocObserver();
+
+  @override
+  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+    super.onChange(bloc, change);
+    log('onChange(${bloc.runtimeType}, $change)');
+  }
+
+  @override
+  void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
+    log('onError(${bloc.runtimeType}, $error, $stackTrace)');
+    super.onError(bloc, error, stackTrace);
   }
 }

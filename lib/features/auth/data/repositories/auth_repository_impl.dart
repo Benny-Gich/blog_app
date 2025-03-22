@@ -1,22 +1,22 @@
 // ignore_for_file: implementation_imports
-
-import 'package:blog_app/core/error/exceptions.dart';
 import 'package:blog_app/core/error/failure.dart';
 import 'package:blog_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:blog_app/features/auth/domain/entities/profile.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/src/either.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDataSource remoteDataSourse;
-  const AuthRepositoryImpl(this.remoteDataSourse);
+  final AuthRemoteDataSource remoteDataSource;
+  const AuthRepositoryImpl(this.remoteDataSource);
   @override
   Future<Either<Failure, Profile>> loginWithEmailPassword({
     required String email,
     required String password,
   }) async {
     return _getUser(
-      () async => await remoteDataSourse.loginWithEmailPassword(
+      () async => await remoteDataSource.loginWithEmailPassword(
         email: email,
         password: password,
       ),
@@ -30,7 +30,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     return _getUser(
-      () async => await remoteDataSourse.signUpWithEmailPassword(
+      () async => await remoteDataSource.signUpWithEmailPassword(
         name: name,
         email: email,
         password: password,
@@ -44,8 +44,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final profile = await fn();
       return right(profile);
-    } on ServerException catch (e) {
+    } on sb.AuthException catch (e) {
       return left(Failure(e.message));
+    } catch (e) {
+      return left(Failure(e.toString()));
     }
   }
 }
