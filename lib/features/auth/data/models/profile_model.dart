@@ -1,4 +1,4 @@
-import 'package:blog_app/features/auth/domain/entities/profile.dart';
+import 'package:blog_app/core/common/entities/profile.dart';
 
 class ProfileModel extends Profile {
   ProfileModel({
@@ -12,6 +12,18 @@ class ProfileModel extends Profile {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
+    );
+  }
+
+  ProfileModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+  }) {
+    return ProfileModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
     );
   }
 }

@@ -5,3 +5,5 @@ abstract interface class UseCase<SuccessType, Params> {
   //Future <List<String>> getListOfString();
   Future<Either<Failure, SuccessType>> call(Params params);
 }
+
+class NoParams {}
