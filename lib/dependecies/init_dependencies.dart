@@ -8,6 +8,12 @@ import 'package:blog_app/features/auth/data/datasources/auth_remote_data_source.
 import 'package:blog_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:blog_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:blog_app/features/blog/data/datasources/blog_remote_data_source.dart';
+import 'package:blog_app/features/blog/data/repositories/blog_repository_impl.dart';
+import 'package:blog_app/features/blog/domain/repositories/blog_repository.dart';
+import 'package:blog_app/features/blog/domain/usecase/get_all_blogs.dart';
+import 'package:blog_app/features/blog/domain/usecase/upload_blog.dart';
+import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -15,6 +21,7 @@ final GetIt serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
   _initAuth();
+  _initBlog();
   final supabase = await Supabase.initialize(
     url: AppSectrets.supabaseUrl,
     anonKey: AppSectrets.supabaseAnonKey,
@@ -28,42 +35,78 @@ Future<void> initDependencies() async {
 void _initAuth() {
   //Data Source
   serviceLocator
-    ..registerFactory<AuthRemoteDataSource>(
+    ..registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(
         serviceLocator(),
       ),
     )
     //Repository
-    ..registerFactory<AuthRepository>(
+    ..registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
         serviceLocator(),
       ),
     )
     //USersignup Usecase
-    ..registerFactory(
+    ..registerLazySingleton(
       () => UserSignUp(
         serviceLocator(),
       ),
     )
     //usersignin Usecase
-    ..registerFactory(
+    ..registerLazySingleton(
       () => UserLogin(
         serviceLocator(),
       ),
     )
     //CurrentUser Usecase
-    ..registerFactory(
+    ..registerLazySingleton(
       () => CurrentUser(
         serviceLocator(),
       ),
     )
     //AuthBloc
-    ..registerLazySingleton(
+    ..registerFactory(
       () => AuthBloc(
         userSignUp: serviceLocator(),
         userLogin: serviceLocator(),
         currentUser: serviceLocator(),
         appUserCubit: serviceLocator(),
+      ),
+    );
+}
+
+void _initBlog() {
+  serviceLocator
+
+    //Data Source
+    ..registerLazySingleton<BlogRemoteDataSource>(
+      () => BlogRemoteDataSourceImpl(
+        supabaseClient: serviceLocator(),
+      ),
+    )
+    //Repository
+    ..registerLazySingleton<BlogRepository>(
+      () => BlogRepositoryimpl(
+        serviceLocator(),
+      ),
+    )
+    //Upload Usecase
+    ..registerLazySingleton(
+      () => UploadBlog(
+        serviceLocator(),
+      ),
+    )
+    //Get All Blogs Usecase
+    ..registerFactory(
+      () => GetAllBlogs(
+        serviceLocator(),
+      ),
+    )
+    //Bloc
+    ..registerLazySingleton(
+      () => BlogBloc(
+        uploadBlog: serviceLocator(),
+        getAllBlogs: serviceLocator(),
       ),
     );
 }
