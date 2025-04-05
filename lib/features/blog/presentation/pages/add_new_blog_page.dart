@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'dart:io';
 import 'package:blog_app/core/common/cubits/cubit/app_user_cubit.dart';
 import 'package:blog_app/core/common/widgets/loader.dart';
@@ -85,19 +87,37 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
       ),
       body: BlocConsumer<BlogBloc, BlogState>(
         listener: (context, state) {
-          if (state is BlogFailure) {
-            showSnackBar(context, state.error);
-          } else if (state is BlogUploadSuccess) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              BlogPage.route(),
-              (route) => false,
-            );
+          // if (state.status == BlogStatus.failure) {
+          //   showSnackBar(context, state.error);
+          // } else if (state is BlogUploadSuccess) {
+          //   Navigator.pushAndRemoveUntil(
+          //     context,
+          //     BlogPage.route(),
+          //     (route) => false,
+          //   );
+          // }
+          switch (state.status) {
+            case BlogStatus.failure:
+              showSnackBar(context, state.error);
+              break;
+            case BlogStatus.uploadSuccess:
+              Navigator.pushAndRemoveUntil(
+                context,
+                BlogPage.route(),
+                (route) => false,
+              );
+            default:
           }
         },
         builder: (context, state) {
-          if (state is BlogLoading) {
-            return Loader();
+          // if (state is BlogLoading) {
+          //   return Loader();
+          // }
+          switch (state.status) {
+            case BlogStatus.loading:
+              return Loader();
+
+            default:
           }
           return SingleChildScrollView(
             child: Padding(

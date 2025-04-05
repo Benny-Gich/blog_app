@@ -84,11 +84,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<ProfileModel?> getCurrentUserData() async {
     try {
       if (currentUserSession != null) {
-        final profileData =
-            await supabaseClient.from('User Profile Table').select().eq(
-                  'id',
-                  currentUserSession!.user.id,
-                );
+        final profileData = await supabaseClient.from('profiles').select().eq(
+              'id',
+              currentUserSession!.user.id,
+            );
         return ProfileModel.fromJson(profileData.first).copyWith(
           email: currentUserSession!.user.email,
         );
