@@ -1,5 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
 import 'dart:developer';
-
 import 'package:blog_app/core/error/exceptions.dart';
 import 'package:blog_app/features/auth/data/models/profile_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,6 +18,8 @@ abstract interface class AuthRemoteDataSource {
     required String password,
   });
   Future<ProfileModel?> getCurrentUserData();
+
+  Future<void> signOut();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -95,6 +97,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return null;
     } catch (e) {
       throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      await supabaseClient.auth.signOut();
+    } catch (e, s) {
+      log('Error Loging out', error: e, stackTrace: s);
     }
   }
 }

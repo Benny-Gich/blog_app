@@ -12,7 +12,7 @@ import 'package:blog_app/features/blog/presentation/widgets/blog_editor.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+  
 class AddNewBlogPage extends StatefulWidget {
   static route() => MaterialPageRoute(
         builder: (context) => AddNewBlogPage(),
@@ -87,15 +87,6 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
       ),
       body: BlocConsumer<BlogBloc, BlogState>(
         listener: (context, state) {
-          // if (state.status == BlogStatus.failure) {
-          //   showSnackBar(context, state.error);
-          // } else if (state is BlogUploadSuccess) {
-          //   Navigator.pushAndRemoveUntil(
-          //     context,
-          //     BlogPage.route(),
-          //     (route) => false,
-          //   );
-          // }
           switch (state.status) {
             case BlogStatus.failure:
               showSnackBar(context, state.error);
@@ -110,9 +101,6 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
           }
         },
         builder: (context, state) {
-          // if (state is BlogLoading) {
-          //   return Loader();
-          // }
           switch (state.status) {
             case BlogStatus.loading:
               return Loader();

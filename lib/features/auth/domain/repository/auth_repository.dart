@@ -14,7 +14,7 @@ abstract interface class AuthRepository {
     required String password,
   });
 
-  Future<Either<Failure, Profile>> currentUSer() {
-    throw UnimplementedError();
-  }
+  Future<Either<Failure, Profile>> currentUSer();
+
+  Future<void> signOut();
 }

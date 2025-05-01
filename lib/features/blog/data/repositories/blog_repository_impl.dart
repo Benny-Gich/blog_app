@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:blog_app/core/error/exceptions.dart';
 import 'package:blog_app/core/error/failure.dart';
@@ -50,6 +51,36 @@ class BlogRepositoryimpl implements BlogRepository {
       final blogs = await blogRemoteDataSource.getAllBlogs();
       return right(blogs);
     } on ServerException catch (e) {
+      return left(
+        Failure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> deleteBlog({required String id}) async {
+    try {
+      final res = await blogRemoteDataSource.deleteBlog(id);
+      return right(res);
+    } catch (e, s) {
+      log('Error deleting', error: e, stackTrace: s);
+      return left(
+        Failure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadBlog({required String id}) async {
+    try {
+      final res = await blogRemoteDataSource.uploadBlog(id);
+      return right(res);
+    } catch (e, s) {
+      log('Error updating blog', error: e, stackTrace: s);
       return left(
         Failure(
           e.toString(),

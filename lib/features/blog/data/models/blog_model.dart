@@ -1,7 +1,9 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:blog_app/features/blog/domain/entities/blog.dart';
 
 class BlogModel extends Blog {
-  BlogModel({
+  const BlogModel({
     required super.id,
     required super.posterId,
     required super.title,

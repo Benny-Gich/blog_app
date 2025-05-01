@@ -1,9 +1,10 @@
 part of 'blog_bloc.dart';
 
-sealed class BlogEvent {
+sealed class BlogEvent extends Equatable {
   const BlogEvent();
 
-  List<Object> get props => [];
+  @override
+  List<Object?> get props => [];
 }
 
 final class BlogUpload extends BlogEvent {
@@ -20,6 +21,23 @@ final class BlogUpload extends BlogEvent {
     required this.image,
     required this.topics,
   });
+
+  @override
+  List<Object?> get props => [
+        posterId,
+        title,
+        content,
+        image,
+        topics,
+      ];
 }
 
 final class BlogFetchAllBlogs extends BlogEvent {}
+
+final class DeleteBlogEvent extends BlogEvent {
+  final String id;
+  const DeleteBlogEvent(this.id);
+
+  @override
+  List<Object?> get props => [id];
+}

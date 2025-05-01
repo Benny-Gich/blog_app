@@ -4,7 +4,6 @@ import 'package:blog_app/core/utils/show_snackbar.dart';
 import 'package:blog_app/features/blog/domain/entities/blog.dart';
 import 'package:blog_app/features/blog/presentation/pages/blog_viewer_page.dart';
 import 'package:blog_app/features/blog/presentation/widgets/blog_delete.dart';
-//import 'package:blog_app/features/blog/presentation/widgets/blog_delete.dart';
 import 'package:flutter/material.dart';
 
 class BlogCard extends StatelessWidget {
@@ -22,11 +21,11 @@ class BlogCard extends StatelessWidget {
       blog: blog,
       onDelete: (blog) {
         //call delete
-        showSnackBar(context, 'Post ${blog.posterName} deleted');
+        showSnackBar(context, 'Post ${blog.title} deleted');
       },
       onShare: (blog) {
         //call share
-        showSnackBar(context, 'Post ${blog.posterName} shared');
+        showSnackBar(context, 'Post ${blog.title} shared');
       },
       child: GestureDetector(
         onTap: () {

@@ -1,5 +1,7 @@
 import 'package:blog_app/core/theme/app_pallete.dart';
+import 'package:blog_app/core/utils/show_snackbar.dart';
 import 'package:blog_app/features/blog/domain/entities/blog.dart';
+import 'package:blog_app/features/blog/presentation/pages/blog_viewer_page.dart';
 import 'package:flutter/material.dart';
 
 class BlogDelete extends StatelessWidget {
@@ -21,7 +23,7 @@ class BlogDelete extends StatelessWidget {
       key: Key(blog.id),
       direction: DismissDirection.horizontal,
       background: Container(
-        color: AppPallete.greyColor,
+        color: AppPallete.errorColor,
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(right: 20),
         child: Icon(
@@ -29,7 +31,7 @@ class BlogDelete extends StatelessWidget {
         ),
       ),
       secondaryBackground: Container(
-        color: AppPallete.errorColor,
+        color: AppPallete.greyColor,
         alignment: Alignment.centerRight,
         padding: EdgeInsets.only(right: 20),
         child: Icon(
@@ -50,8 +52,11 @@ class BlogDelete extends StatelessWidget {
                     child: Text('CANCEL'),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
                     child: Text('DELETE'),
+                    onPressed: () {
+
+                      Navigator.of(context).pop(true);
+                    },
                   ),
                 ],
               );
@@ -59,7 +64,7 @@ class BlogDelete extends StatelessWidget {
           );
         }
         if (direction == DismissDirection.endToStart) {
-          // showSnackBar(context, 'Sharing: ${BlogViewerPage(blog: blog)}');
+          showSnackBar(context, 'Sharing: ${BlogViewerPage(blog: blog)}');
           return true;
         }
         return false;

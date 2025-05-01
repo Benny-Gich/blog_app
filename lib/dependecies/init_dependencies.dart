@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:blog_app/core/common/cubits/cubit/app_user_cubit.dart';
+import 'package:blog_app/core/network/connection_checker.dart';
 import 'package:blog_app/core/supabase_secrets/app_sectrets.dart';
 import 'package:blog_app/core/usecase/current_user.dart';
 import 'package:blog_app/core/usecase/user_login.dart';
@@ -11,10 +12,12 @@ import 'package:blog_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app/features/blog/data/datasources/blog_remote_data_source.dart';
 import 'package:blog_app/features/blog/data/repositories/blog_repository_impl.dart';
 import 'package:blog_app/features/blog/domain/repositories/blog_repository.dart';
+import 'package:blog_app/features/blog/domain/usecase/delete_blog.dart';
 import 'package:blog_app/features/blog/domain/usecase/get_all_blogs.dart';
 import 'package:blog_app/features/blog/domain/usecase/upload_blog.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final GetIt serviceLocator = GetIt.instance;
@@ -27,9 +30,21 @@ Future<void> initDependencies() async {
     anonKey: AppSectrets.supabaseAnonKey,
   );
   serviceLocator.registerLazySingleton(() => supabase.client);
+  serviceLocator.registerFactory(() => InternetConnection());
 
-  // COre Dependencies
-  serviceLocator.registerLazySingleton(() => AppUserCubit());
+  // Core Dependencies
+  serviceLocator.registerLazySingleton(
+    () => AppUserCubit(
+      serviceLocator(),
+    ),
+  );
+
+  // Checking Internet Connection
+  serviceLocator.registerFactory<ConnectionChecker>(
+    () => ConnectionCheckerImpl(
+      serviceLocator(),
+    ),
+  );
 }
 
 void _initAuth() {
@@ -43,6 +58,7 @@ void _initAuth() {
     //Repository
     ..registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
+        serviceLocator(),
         serviceLocator(),
       ),
     )
@@ -96,6 +112,9 @@ void _initBlog() {
         serviceLocator(),
       ),
     )
+
+    //Delete UseCase
+    ..registerLazySingleton(() => DeleteBlogs(serviceLocator()))
     //Get All Blogs Usecase
     ..registerFactory(
       () => GetAllBlogs(
@@ -105,6 +124,7 @@ void _initBlog() {
     //Bloc
     ..registerLazySingleton(
       () => BlogBloc(
+        deleteBlogs: serviceLocator(),
         uploadBlog: serviceLocator(),
         getAllBlogs: serviceLocator(),
       ),

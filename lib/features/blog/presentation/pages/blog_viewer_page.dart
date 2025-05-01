@@ -28,6 +28,13 @@ class BlogViewerPage extends StatelessWidget {
             Icons.arrow_back_ios,
           ),
         ),
+        title: Text(
+          blog.title,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Scrollbar(
         child: SingleChildScrollView(
@@ -36,25 +43,6 @@ class BlogViewerPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  blog.title,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'By  ${blog.posterName}',
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  '${formatDateBydMMMYYYY(blog.updatedAt)}.${calculateReadingTime(blog.content)} min',
-                  style: TextStyle(
-                    color: AppPallete.greyColor,
-                  ),
-                ),
                 SizedBox(height: 20),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
@@ -66,6 +54,21 @@ class BlogViewerPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15,
                     height: 2,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  '${formatDateBydMMMYYYY(blog.updatedAt)}.${calculateReadingTime(blog.content)} min',
+                  style: TextStyle(
+                    color: AppPallete.greyColor,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'By  ${blog.posterName}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
                   ),
                 ),
               ],
